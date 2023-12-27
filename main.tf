@@ -64,7 +64,7 @@ resource "aws_s3_object" "this" {
   source       = each.value.source_path
   content      = each.value.content
   content_type = each.value.content_type
-  etag         = each.value.digests.sha256
+  etag         = each.value.digests.md5
 }
 
 # Allow CloudFront to serve content from S3
