@@ -37,15 +37,15 @@ resource "aws_s3_bucket_acl" "this" {
   depends_on = [aws_s3_bucket_ownership_controls.this]
 }
 
-# resource "aws_s3_bucket_server_side_encryption_configuration" "candidates" {
-#   bucket = aws_s3_bucket.this.bucket
+resource "aws_s3_bucket_server_side_encryption_configuration" "candidates" {
+  bucket = aws_s3_bucket.this.bucket
 
-#   rule {
-#     apply_server_side_encryption_by_default {
-#       sse_algorithm = "AES256"
-#     }
-#   }
-# }
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
 
 module "source_code" {
   count = var.static_content_path != null ? 1 : 0
@@ -67,7 +67,9 @@ resource "aws_s3_object" "this" {
   etag         = each.value.digests.md5
 }
 
-# Allow CloudFront to serve content from S3
+data "aws_caller_identity" "this" {}
+
+# Allow CloudFront to serve content from S3 + use KMS key
 data "aws_iam_policy_document" "this" {
   statement {
     sid       = "AllowCloudFrontServicePrincipal"
@@ -83,6 +85,27 @@ data "aws_iam_policy_document" "this" {
     principals {
       type        = "Service"
       identifiers = ["cloudfront.amazonaws.com"]
+    }
+  }
+
+  statement {
+    sid = "AllowCloudFrontServicePrincipalSSE-KMS"
+    actions = [
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*"
+    ]
+    resources = "*"
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+      values   = [aws_cloudfront_distribution.this.arn]
+    }
+
+    principals {
+      type        = "AWS"
+      identifiers = "arn:aws:iam::${data.aws_caller_identity.this.account_id}:root"
     }
   }
 }
