@@ -89,7 +89,10 @@ data "aws_iam_policy_document" "this" {
     actions = [
       "kms:Decrypt",
       "kms:Encrypt",
-      "kms:GenerateDataKey*"
+      "kms:GenerateDataKey",
+      "kms:GenerateDataKeyWithoutPlaintext",
+      "kms:GenerateDataKeyPair",
+      "kms:GenerateDataKeyPairWithoutPlaintext",
     ]
     resources = ["*"]
 
@@ -100,8 +103,8 @@ data "aws_iam_policy_document" "this" {
     }
 
     principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.this.account_id}:root"]
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
     }
   }
 }
