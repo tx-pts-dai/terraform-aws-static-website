@@ -91,7 +91,7 @@ data "aws_iam_policy_document" "this" {
       "kms:Encrypt",
       "kms:GenerateDataKey*"
     ]
-    resources = "*"
+    resources = ["*"]
 
     condition {
       test     = "StringEquals"
