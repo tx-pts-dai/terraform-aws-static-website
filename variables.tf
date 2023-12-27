@@ -26,6 +26,12 @@ variable "static_content_path" {
   default     = null
 }
 
+variable "force_destroy" {
+  description = "Set this to true, apply and then you are able to force destroy all the resources in the cluster."
+  type        = bool
+  default     = false
+}
+
 variable "cloudfront_redirected_http_codes" {
   description = "List of HTTP status codes that are meant to be redirected to the var.index_page"
   type        = list(string)

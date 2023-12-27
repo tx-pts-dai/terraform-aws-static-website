@@ -9,18 +9,14 @@ terraform {
   }
 }
 
-provider "aws" {
-  region = "us-east-1"
-  alias  = "us"
-}
-
 locals {
   bucket_name            = var.bucket_name != null ? var.bucket_name : var.url
   normalized_bucket_name = replace(local.bucket_name, ".", "-")
 }
 
 resource "aws_s3_bucket" "this" {
-  bucket = local.bucket_name
+  bucket        = local.bucket_name
+  force_destroy = var.force_destroy
 }
 
 resource "aws_s3_bucket_ownership_controls" "this" {
