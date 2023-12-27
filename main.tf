@@ -14,8 +14,13 @@ provider "aws" {
   alias  = "us"
 }
 
+locals {
+  bucket_name            = var.bucket_name != null ? var.bucket_name : var.url
+  normalized_bucket_name = replace(local.bucket_name, ".", "-")
+}
+
 resource "aws_s3_bucket" "this" {
-  bucket = var.bucket_name
+  bucket = local.bucket_name
 }
 
 resource "aws_s3_bucket_acl" "this" {
@@ -67,7 +72,7 @@ resource "aws_s3_bucket_public_access_block" "this" {
 
 # Cache everything for 30 seconds. They are static files anyway
 resource "aws_cloudfront_cache_policy" "this" {
-  name        = "s3"
+  name        = "${local.normalized_bucket_name}-s3"
   default_ttl = var.cloudfront_cache_default_ttl
   max_ttl     = 86400 # 86300 = 1 day
   min_ttl     = 0
@@ -86,7 +91,7 @@ resource "aws_cloudfront_cache_policy" "this" {
 }
 
 resource "aws_cloudfront_origin_access_identity" "this" {
-  comment = "Cloudfront access identity for ${var.bucket_name} S3 bucket."
+  comment = "Cloudfront access identity for ${local.bucket_name} S3 bucket."
 }
 
 resource "aws_cloudfront_distribution" "this" {
