@@ -28,6 +28,37 @@ resource "aws_s3_bucket_acl" "this" {
   acl    = "private"
 }
 
+resource "aws_s3_bucket_server_side_encryption_configuration" "candidates" {
+  bucket = aws_s3_bucket.this.bucket
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+module "source_code" {
+  count = var.static_content_path != null ? 1 : 0
+
+  source  = "hashicorp/dir/template"
+  version = "~> 1.0"
+
+  base_dir = var.static_content_path
+}
+
+resource "aws_s3_object" "this" {
+  for_each = var.static_content_path != null ? module.source_code[0].files : {}
+
+  bucket       = aws_s3_bucket.this.bucket
+  key          = each.key
+  source       = each.value.source_path
+  content      = each.value.content
+  content_type = each.value.content_type
+  etag         = each.value.digests.sha256
+}
+
+
 # data "aws_iam_policy_document" "this" {
 #   statement {
 #     sid       = "AllowCloudFrontServicePrincipal"

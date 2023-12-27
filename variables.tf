@@ -20,6 +20,11 @@ variable "index_page" {
   default     = "index.html"
 }
 
+variable "static_content_path" {
+  description = "Path to the website static files to be uploaded to S3. If 'null', no objects are uploaded and app deployment can be handled separately."
+  type        = string
+  default     = null
+}
 
 variable "cloudfront_redirected_http_codes" {
   description = "List of HTTP status codes that are meant to be redirected to the var.index_page"
