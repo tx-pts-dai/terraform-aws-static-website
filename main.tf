@@ -37,15 +37,15 @@ resource "aws_s3_bucket_acl" "this" {
   depends_on = [aws_s3_bucket_ownership_controls.this]
 }
 
-resource "aws_s3_bucket_server_side_encryption_configuration" "candidates" {
-  bucket = aws_s3_bucket.this.bucket
+# resource "aws_s3_bucket_server_side_encryption_configuration" "candidates" {
+#   bucket = aws_s3_bucket.this.bucket
 
-  rule {
-    apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
-    }
-  }
-}
+#   rule {
+#     apply_server_side_encryption_by_default {
+#       sse_algorithm = "AES256"
+#     }
+#   }
+# }
 
 module "source_code" {
   count = var.static_content_path != null ? 1 : 0
@@ -130,8 +130,12 @@ resource "aws_cloudfront_cache_policy" "this" {
   }
 }
 
-resource "aws_cloudfront_origin_access_identity" "this" {
-  comment = "Cloudfront access identity for ${local.bucket_name} S3 bucket."
+resource "aws_cloudfront_origin_access_control" "this" {
+  name                              = local.normalized_bucket_name
+  description                       = "Allow CloudFront to access S3 as origin following the recommended Origin Access Control design pattern. Docs: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
 }
 
 resource "aws_cloudfront_distribution" "this" {
@@ -144,12 +148,9 @@ resource "aws_cloudfront_distribution" "this" {
   wait_for_deployment = false
 
   origin {
-    domain_name = aws_s3_bucket.this.bucket_regional_domain_name
-    origin_id   = "static"
-
-    s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.this.cloudfront_access_identity_path
-    }
+    domain_name              = aws_s3_bucket.this.bucket_regional_domain_name
+    origin_id                = "static"
+    origin_access_control_id = aws_cloudfront_origin_access_control.this.id
   }
 
   default_cache_behavior {
