@@ -20,6 +20,12 @@ variable "index_page" {
   default     = "index.html"
 }
 
+variable "error_page" {
+  description = "Error page that should be displayed whenever CloudFront returns any of the 'var.cloudfront_redirected_http_codes'. Defauls to `index.html`"
+  type        = string
+  default     = "index.html"
+}
+
 variable "static_content_path" {
   description = "Path to the website static files to be uploaded to S3. If 'null', no objects are uploaded and app deployment can be handled separately."
   type        = string

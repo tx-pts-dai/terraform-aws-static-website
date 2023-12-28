@@ -65,7 +65,7 @@ resource "aws_s3_object" "this" {
 
 data "aws_caller_identity" "this" {}
 
-# Allow CloudFront to serve content from S3
+# Allow CloudFront to serve content from S3 through Origin Access Control policy
 data "aws_iam_policy_document" "this" {
   statement {
     sid       = "AllowCloudFrontServicePrincipal"
@@ -102,7 +102,7 @@ resource "aws_s3_bucket_public_access_block" "this" {
 resource "aws_cloudfront_cache_policy" "this" {
   name        = "${local.normalized_bucket_name}-s3"
   default_ttl = var.cloudfront_cache_default_ttl
-  max_ttl     = 86400 # 86300 = 1 day
+  max_ttl     = 86400 # 86400 = 1 day
   min_ttl     = 0
 
   parameters_in_cache_key_and_forwarded_to_origin {
@@ -119,8 +119,9 @@ resource "aws_cloudfront_cache_policy" "this" {
 }
 
 resource "aws_cloudfront_origin_access_control" "this" {
+  # Docs: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html
   name                              = local.normalized_bucket_name
-  description                       = "Allow CloudFront to access S3 as origin following the recommended Origin Access Control design pattern. Docs: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html"
+  description                       = "Allow CloudFront to access S3 as origin following the recommended Origin Access Control design pattern."
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
@@ -162,7 +163,7 @@ resource "aws_cloudfront_distribution" "this" {
       error_caching_min_ttl = 60
       error_code            = custom_error_response.value
       response_code         = 200
-      response_page_path    = "/${var.index_page}"
+      response_page_path    = "/${var.error_page}"
     }
   }
 
