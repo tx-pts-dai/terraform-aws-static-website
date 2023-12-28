@@ -32,3 +32,24 @@ module "frontend" {
     aws.us = aws.us
   }
 }
+
+module "frontend_no_files" {
+  source = "../"
+
+  url            = "autolayout.ness-dev.tamedia.ch"
+  route53_domain = "ness-dev.tamedia.ch"
+
+  providers = {
+    aws.us = aws.us
+  }
+}
+
+module "frontend_no_dns" {
+  source = "../"
+
+  url = "autolayout.ness-dev.tamedia.ch"
+
+  providers = {
+    aws.us = aws.us
+  }
+}
