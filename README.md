@@ -5,8 +5,18 @@ Terraform module to host a static website on AWS by exploiting the basics: Cloud
 ## Usage
 
 ```hcl
+# Required for TLS Certificate for CloudFront distribution
+provider "aws" {
+  region = "us-east-1"
+  alias = "us"
+}
+
 module "frontend" {
   source = "github.com/tx-pts-dai/terraform-aws-static-website"
+
+  providers = {
+    aws.us = aws.us
+  }
 
   url            = "autolayout.ness-dev.tamedia.ch"
   route53_domain = "ness-dev.tamedia.ch"
