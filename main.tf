@@ -127,7 +127,7 @@ resource "aws_cloudfront_origin_access_control" "this" {
 
 resource "aws_cloudfront_distribution" "this" {
   aliases             = [var.url]
-  comment             = ""
+  comment             = "For static web site ${var.url}"
   default_root_object = var.index_page
   enabled             = true
   is_ipv6_enabled     = true
