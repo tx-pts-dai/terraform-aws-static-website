@@ -11,6 +11,7 @@ repos:
         args:
           - "--args=--lockfile=false"
       - id: terraform_tflint
+        exclude: examples/
         args:
           - "--args=--only=terraform_deprecated_interpolation"
           - "--args=--only=terraform_deprecated_index"
@@ -25,6 +26,7 @@ repos:
           - "--args=--only=terraform_required_providers"
           - "--args=--only=terraform_standard_module_structure"
           - "--args=--only=terraform_workspace_remote"
+          - "--args=--module"
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
