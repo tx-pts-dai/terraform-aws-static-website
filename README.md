@@ -75,14 +75,16 @@ as described in the `.pre-commit-config.yaml` file
 |------|------|
 | [aws_cloudfront_cache_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_cache_policy) | resource |
 | [aws_cloudfront_distribution.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution) | resource |
-| [aws_cloudfront_origin_access_identity.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_origin_access_identity) | resource |
+| [aws_cloudfront_origin_access_control.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_origin_access_control) | resource |
 | [aws_route53_record.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_s3_bucket.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 | [aws_s3_bucket_acl.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_acl) | resource |
+| [aws_s3_bucket_ownership_controls.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_ownership_controls) | resource |
+| [aws_s3_bucket_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 | [aws_s3_bucket_public_access_block.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
-| [aws_s3_bucket_server_side_encryption_configuration.candidates](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
 | [aws_s3_bucket_server_side_encryption_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
 | [aws_s3_object.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
+| [aws_iam_policy_document.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_route53_zone.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
 
 ## Inputs
@@ -92,14 +94,22 @@ as described in the `.pre-commit-config.yaml` file
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | Name of the bucket that will store the static website files. It will be served by CloudFront. If not specified, it uses the 'url'. | `string` | `null` | no |
 | <a name="input_cloudfront_cache_default_ttl"></a> [cloudfront\_cache\_default\_ttl](#input\_cloudfront\_cache\_default\_ttl) | Default TTL (in seconds) for objects stored in S3 that will be served through CloudFront. | `number` | `30` | no |
 | <a name="input_cloudfront_redirected_http_codes"></a> [cloudfront\_redirected\_http\_codes](#input\_cloudfront\_redirected\_http\_codes) | List of HTTP status codes that are meant to be redirected to the var.index\_page | `list(string)` | <pre>[<br>  403,<br>  404<br>]</pre> | no |
+| <a name="input_error_page"></a> [error\_page](#input\_error\_page) | Error page that should be displayed whenever CloudFront returns any of the 'var.cloudfront\_redirected\_http\_codes'. Defauls to `index.html` | `string` | `"index.html"` | no |
+| <a name="input_force_destroy"></a> [force\_destroy](#input\_force\_destroy) | Set this to true, apply and then you are able to force destroy all the resources in the cluster. | `bool` | `false` | no |
 | <a name="input_index_page"></a> [index\_page](#input\_index\_page) | Index page that should be displayed as root. Defauls to `index.html` | `string` | `"index.html"` | no |
-| <a name="input_route53_domain"></a> [route53\_domain](#input\_route53\_domain) | Route53 hosted zone domain where the DNS record should be created. This is used for TLS certificate validation too. TODO: allow for CloudFlare-managed DNS records | `string` | n/a | yes |
+| <a name="input_route53_domain"></a> [route53\_domain](#input\_route53\_domain) | Route53 hosted zone domain where the DNS record should be created. This is used for TLS certificate validation too. If 'null' then skip it. | `string` | `null` | no |
 | <a name="input_static_content_path"></a> [static\_content\_path](#input\_static\_content\_path) | Path to the website static files to be uploaded to S3. If 'null', no objects are uploaded and app deployment can be handled separately. | `string` | `null` | no |
 | <a name="input_url"></a> [url](#input\_url) | URL where the application is going to be served on. CloudFront will be deployed and a DNS record pointing to it too | `string` | n/a | yes |
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_acm_certificate_arn"></a> [acm\_certificate\_arn](#output\_acm\_certificate\_arn) | ARN of the TLS certificate created and configured on the custom domain for the CloudFront distribution. |
+| <a name="output_cloudfront_distribution_arn"></a> [cloudfront\_distribution\_arn](#output\_cloudfront\_distribution\_arn) | ARN of the CloudFront distribution that serves the content. |
+| <a name="output_cloudfront_distribution_id"></a> [cloudfront\_distribution\_id](#output\_cloudfront\_distribution\_id) | ID of the CloudFront distribution that serves the content. |
+| <a name="output_s3_bucket_arn"></a> [s3\_bucket\_arn](#output\_s3\_bucket\_arn) | ARN of the S3 bucket that hosts the static website files. |
+| <a name="output_s3_bucket_name"></a> [s3\_bucket\_name](#output\_s3\_bucket\_name) | Name of the S3 bucket that hosts the static website files. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Authors

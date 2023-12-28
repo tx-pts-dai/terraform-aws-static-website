@@ -63,8 +63,6 @@ resource "aws_s3_object" "this" {
   etag         = each.value.digests.md5
 }
 
-data "aws_caller_identity" "this" {}
-
 # Allow CloudFront to serve content from S3 through Origin Access Control policy
 data "aws_iam_policy_document" "this" {
   statement {
@@ -177,11 +175,14 @@ resource "aws_cloudfront_distribution" "this" {
 }
 
 data "aws_route53_zone" "this" {
-  name = var.route53_domain
+  count = var.route53_domain != null ? 1 : 0
+  name  = var.route53_domain
 }
 
 resource "aws_route53_record" "this" {
-  zone_id = data.aws_route53_zone.this.zone_id
+  count = var.route53_domain != null ? 1 : 0
+
+  zone_id = data.aws_route53_zone.this[count.index].zone_id
   name    = var.url
   type    = "A"
 
@@ -200,7 +201,8 @@ module "acm" {
     aws = aws.us
   }
 
+  create_route53_records    = var.route53_domain != null
   domain_name               = var.route53_domain
-  zone_id                   = data.aws_route53_zone.this.id
+  zone_id                   = var.route53_domain != null ? data.aws_route53_zone.this[0].id : null
   subject_alternative_names = [var.url]
 }

@@ -4,8 +4,9 @@ variable "url" {
 }
 
 variable "route53_domain" {
-  description = "Route53 hosted zone domain where the DNS record should be created. This is used for TLS certificate validation too. TODO: allow for CloudFlare-managed DNS records"
+  description = "Route53 hosted zone domain where the DNS record should be created. This is used for TLS certificate validation too. If 'null' then skip it."
   type        = string
+  default     = null
 }
 
 variable "bucket_name" {
