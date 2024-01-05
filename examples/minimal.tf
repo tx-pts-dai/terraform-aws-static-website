@@ -19,6 +19,21 @@ provider "aws" {
   alias  = "us"
 }
 
+module "frontend_complete" {
+  source = "../"
+
+  url                          = "autolayout.ness-dev.tamedia.ch"
+  route53_domain               = "ness-dev.tamedia.ch"
+  cloudfront_additional_cnames = ["autolayout-2.ness-dev.tamedia.ch"]
+
+  # Optional
+  static_content_path = "./build/"
+
+  providers = {
+    aws.us = aws.us
+  }
+}
+
 module "frontend" {
   source = "../"
 
