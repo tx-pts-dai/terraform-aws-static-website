@@ -50,3 +50,9 @@ variable "cloudfront_cache_default_ttl" {
   type        = number
   default     = 30
 }
+
+variable "cloudfront_additional_cnames" {
+  description = "List of Altername names to use for the CloudFront distribution"
+  type        = list(string)
+  default     = []
+}

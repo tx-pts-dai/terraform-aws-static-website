@@ -180,10 +180,10 @@ data "aws_route53_zone" "this" {
 }
 
 resource "aws_route53_record" "this" {
-  count = var.route53_domain != null ? 1 : 0
+  for_each = var.route53_domain != null ? toset(concat([var.url], var.cloudfront_additional_cnames)) : toset([])
 
   zone_id = data.aws_route53_zone.this[count.index].zone_id
-  name    = var.url
+  name    = each.value
   type    = "A"
 
   alias {
@@ -202,7 +202,7 @@ module "acm" {
   }
 
   create_route53_records    = var.route53_domain != null
-  domain_name               = var.route53_domain
+  domain_name               = var.url
   zone_id                   = var.route53_domain != null ? data.aws_route53_zone.this[0].id : null
-  subject_alternative_names = [var.url]
+  subject_alternative_names = var.cloudfront_additional_cnames
 }
