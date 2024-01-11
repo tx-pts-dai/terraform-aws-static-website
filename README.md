@@ -102,6 +102,7 @@ as described in the `.pre-commit-config.yaml` file
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | Name of the bucket that will store the static website files. It will be served by CloudFront. If not specified, it uses the 'url'. | `string` | `null` | no |
+| <a name="input_cloudfront_additional_cnames"></a> [cloudfront\_additional\_cnames](#input\_cloudfront\_additional\_cnames) | List of Altername names to use for the CloudFront distribution | `list(string)` | `[]` | no |
 | <a name="input_cloudfront_cache_default_ttl"></a> [cloudfront\_cache\_default\_ttl](#input\_cloudfront\_cache\_default\_ttl) | Default TTL (in seconds) for objects stored in S3 that will be served through CloudFront. | `number` | `30` | no |
 | <a name="input_cloudfront_redirected_http_codes"></a> [cloudfront\_redirected\_http\_codes](#input\_cloudfront\_redirected\_http\_codes) | List of HTTP status codes that are meant to be redirected to the var.index\_page | `list(string)` | <pre>[<br>  403,<br>  404<br>]</pre> | no |
 | <a name="input_error_page"></a> [error\_page](#input\_error\_page) | Error page that should be displayed whenever CloudFront returns any of the 'var.cloudfront\_redirected\_http\_codes'. Defauls to `index.html` | `string` | `"index.html"` | no |
