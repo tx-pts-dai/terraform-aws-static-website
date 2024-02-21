@@ -14,6 +14,11 @@ output "cloudfront_distribution_arn" {
   value       = aws_cloudfront_distribution.this.arn
 }
 
+output "cloudfront_distribution_domain_name" {
+  description = "Domain name of the CloudFront distribution that serves the content."
+  value       = aws_cloudfront_distribution.this.domain_name
+}
+
 output "s3_bucket_name" {
   description = "Name of the S3 bucket that hosts the static website files."
   value       = aws_s3_bucket.this.bucket
