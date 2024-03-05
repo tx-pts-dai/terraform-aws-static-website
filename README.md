@@ -93,6 +93,7 @@ as described in the `.pre-commit-config.yaml` file
 | [aws_s3_bucket_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 | [aws_s3_bucket_public_access_block.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_s3_bucket_server_side_encryption_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
+| [aws_s3_bucket_versioning.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
 | [aws_s3_object.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
 | [aws_iam_policy_document.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_route53_zone.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
@@ -111,6 +112,7 @@ as described in the `.pre-commit-config.yaml` file
 | <a name="input_route53_domain"></a> [route53\_domain](#input\_route53\_domain) | Route53 hosted zone domain where the DNS record should be created. This is used for TLS certificate validation too. If 'null' then skip it. | `string` | `null` | no |
 | <a name="input_static_content_path"></a> [static\_content\_path](#input\_static\_content\_path) | Path to the website static files to be uploaded to S3. If 'null', no objects are uploaded and app deployment can be handled separately. | `string` | `null` | no |
 | <a name="input_url"></a> [url](#input\_url) | URL where the application is going to be served on. CloudFront will be deployed and a DNS record pointing to it too | `string` | n/a | yes |
+| <a name="input_versioning"></a> [versioning](#input\_versioning) | Bucket versioning. Either "", "Enabled", "Suspended" of "Disabled" | `string` | `""` | no |
 
 ## Outputs
 
