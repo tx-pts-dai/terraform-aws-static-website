@@ -15,6 +15,12 @@ variable "bucket_name" {
   default     = null
 }
 
+variable "versioning" {
+  description = "Bucket versioning. Either \"\", \"Enabled\", \"Suspended\" of \"Disabled\""
+  type        = string
+  default     = ""
+}
+
 variable "index_page" {
   description = "Index page that should be displayed as root. Defauls to `index.html`"
   type        = string

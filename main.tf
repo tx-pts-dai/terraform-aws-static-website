@@ -43,6 +43,16 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   }
 }
 
+resource "aws_s3_bucket_versioning" "this" {
+  count = var.versioning != "" ? 1 : 0
+
+  bucket = aws_s3_bucket.this.id
+
+  versioning_configuration {
+    status = var.versioning
+  }
+}
+
 module "source_code" {
   count = var.static_content_path != null ? 1 : 0
 
