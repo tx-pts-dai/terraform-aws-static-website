@@ -28,6 +28,7 @@ module "frontend_complete" {
 
   # Optional
   static_content_path = "./build/"
+  versioning          = "Enabled"
 
   providers = {
     aws.us = aws.us
