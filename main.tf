@@ -44,12 +44,12 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
 }
 
 resource "aws_s3_bucket_versioning" "this" {
-  count = var.versioning != "" ? 1 : 0
+  count = var.enable_bucket_versioning == null ? 0 : 1
 
   bucket = aws_s3_bucket.this.id
 
   versioning_configuration {
-    status = var.versioning
+    status = var.enable_bucket_versioning ? "Enabled" : "Suspended"
   }
 }
 

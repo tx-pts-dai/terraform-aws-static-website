@@ -106,13 +106,13 @@ as described in the `.pre-commit-config.yaml` file
 | <a name="input_cloudfront_additional_cnames"></a> [cloudfront\_additional\_cnames](#input\_cloudfront\_additional\_cnames) | List of Altername names to use for the CloudFront distribution | `list(string)` | `[]` | no |
 | <a name="input_cloudfront_cache_default_ttl"></a> [cloudfront\_cache\_default\_ttl](#input\_cloudfront\_cache\_default\_ttl) | Default TTL (in seconds) for objects stored in S3 that will be served through CloudFront. | `number` | `30` | no |
 | <a name="input_cloudfront_redirected_http_codes"></a> [cloudfront\_redirected\_http\_codes](#input\_cloudfront\_redirected\_http\_codes) | List of HTTP status codes that are meant to be redirected to the var.index\_page | `list(string)` | <pre>[<br>  403,<br>  404<br>]</pre> | no |
+| <a name="input_enable_bucket_versioning"></a> [enable\_bucket\_versioning](#input\_enable\_bucket\_versioning) | If bucket versioning should be enabled. By default, bucket will have versioning disabled. A boolean value will tell if it's 'Enabled' or 'Suspended' | `bool` | `null` | no |
 | <a name="input_error_page"></a> [error\_page](#input\_error\_page) | Error page that should be displayed whenever CloudFront returns any of the 'var.cloudfront\_redirected\_http\_codes'. Defauls to `index.html` | `string` | `"index.html"` | no |
 | <a name="input_force_destroy"></a> [force\_destroy](#input\_force\_destroy) | Set this to true, apply and then you are able to force destroy all the resources in the cluster. | `bool` | `false` | no |
 | <a name="input_index_page"></a> [index\_page](#input\_index\_page) | Index page that should be displayed as root. Defauls to `index.html` | `string` | `"index.html"` | no |
 | <a name="input_route53_domain"></a> [route53\_domain](#input\_route53\_domain) | Route53 hosted zone domain where the DNS record should be created. This is used for TLS certificate validation too. If 'null' then skip it. | `string` | `null` | no |
 | <a name="input_static_content_path"></a> [static\_content\_path](#input\_static\_content\_path) | Path to the website static files to be uploaded to S3. If 'null', no objects are uploaded and app deployment can be handled separately. | `string` | `null` | no |
 | <a name="input_url"></a> [url](#input\_url) | URL where the application is going to be served on. CloudFront will be deployed and a DNS record pointing to it too | `string` | n/a | yes |
-| <a name="input_versioning"></a> [versioning](#input\_versioning) | Bucket versioning. Either "", "Enabled", "Suspended" of "Disabled" | `string` | `""` | no |
 
 ## Outputs
 
