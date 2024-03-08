@@ -27,8 +27,8 @@ module "frontend_complete" {
   cloudfront_additional_cnames = ["autolayout-2.ness-dev.tamedia.ch"]
 
   # Optional
-  static_content_path = "./build/"
-  versioning          = "Enabled"
+  static_content_path      = "./build/"
+  enable_bucket_versioning = true
 
   providers = {
     aws.us = aws.us

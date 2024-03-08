@@ -15,10 +15,10 @@ variable "bucket_name" {
   default     = null
 }
 
-variable "versioning" {
-  description = "Bucket versioning. Either \"\", \"Enabled\", \"Suspended\" of \"Disabled\""
-  type        = string
-  default     = ""
+variable "enable_bucket_versioning" {
+  description = "If bucket versioning should be enabled. By default, bucket will have versioning disabled. A boolean value will tell if it's 'Enabled' or 'Suspended'"
+  type        = bool
+  default     = null
 }
 
 variable "index_page" {
