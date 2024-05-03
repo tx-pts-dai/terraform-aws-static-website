@@ -45,3 +45,17 @@ run "s3_bucket_name_matches_variable" {
         error_message = "Bucket name should match the 'bucket_name' if specified"
     }
 }
+
+run "s3_bucket_acl_is_private" {
+    command = plan
+
+    providers = {
+        aws = aws
+        aws.us = aws
+    }
+
+    assert {
+        condition = aws_s3_bucket_acl.this.acl == "private"
+        error_message = "Bucket ACL should be 'private'"
+    }
+}
