@@ -58,6 +58,13 @@ The `pre-commit` command will run:
 
 as described in the `.pre-commit-config.yaml` file
 
+## Testing
+
+```sh
+terraform init -backend=false
+terraform test
+```
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
